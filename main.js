@@ -1,4 +1,30 @@
+// Your Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAyTz4mSZ3Cz7NPQi74lKildQWSqm5zgVo",
+  authDomain: "defusalgame.firebaseapp.com",
+  projectId: "defusalgame",
+  storageBucket: "defusalgame.firebasestorage.app",
+  messagingSenderId: "817365072928",
+  appId: "1:817365072928:web:86b7975cc1dd25fe3d9045",
+  databaseURL: "https://defusalgame.firebaseio.com"
+};
 
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Sign in user anonymously
+firebase.auth().signInAnonymously()
+  .then(() => {
+    console.log("Signed in anonymously");
+  })
+  .catch((error) => {
+    console.error("Firebase auth error:", error);
+  });
+
+// Get a reference to the database
+const db = firebase.database();
+
+// Game code logic
 function enterGame() {
   const code = document.getElementById('codeInput').value.toLowerCase();
   const allowedGames = ['defusal', 'maze', 'password'];
