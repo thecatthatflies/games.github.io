@@ -1,3 +1,13 @@
+function enterGame() {
+  const code = document.getElementById('codeInput').value.toLowerCase();
+  const allowedGames = ['defusal', 'maze', 'password'];
+  if (allowedGames.includes(code)) {
+    window.location.href = code + ".html?code=" + code;
+  } else {
+    document.getElementById('error').classList.remove('hidden');
+  }
+}
+
 // Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAyTz4mSZ3Cz7NPQi74lKildQWSqm5zgVo",
