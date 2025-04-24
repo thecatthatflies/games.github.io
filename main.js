@@ -1,14 +1,4 @@
-function enterGame() {
-  const code = document.getElementById('codeInput').value.toLowerCase();
-  const allowedGames = ['defusal', 'maze', 'password'];
-  if (allowedGames.includes(code)) {
-    window.location.href = code + ".html?code=" + code;
-  } else {
-    document.getElementById('error').classList.remove('hidden');
-  }
-}
-
-// Your Firebase config
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAyTz4mSZ3Cz7NPQi74lKildQWSqm5zgVo",
   authDomain: "defusalgame.firebaseapp.com",
@@ -22,7 +12,7 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Sign in user anonymously
+// Sign in anonymously
 firebase.auth().signInAnonymously()
   .then(() => {
     console.log("Signed in anonymously");
@@ -31,15 +21,14 @@ firebase.auth().signInAnonymously()
     console.error("Firebase auth error:", error);
   });
 
-// Get a reference to the database
 const db = firebase.database();
 
-// Game code logic
+// Only keep one enterGame() function!
 function enterGame() {
   const code = document.getElementById('codeInput').value.toLowerCase();
   const allowedGames = ['defusal', 'maze', 'password'];
   if (allowedGames.includes(code)) {
-    window.location.href = code + ".html";
+    window.location.href = code + ".html?code=" + code;
   } else {
     document.getElementById('error').classList.remove('hidden');
   }
