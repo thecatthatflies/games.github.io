@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Defusal Lobby</title>
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    input, button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Defusal Lobby</h1>
+  <div id="setup">
+    <input id="roomCode" placeholder="Enter Room Code" />
+    <button onclick="createRoom()">Create Room</button>
+    <button onclick="joinRoom()">Join Room</button>
+  </div>
+  <div id="lobby" style="display:none;">
+    <p>Room Code: <span id="codeDisplay"></span></p>
+    <p>You are: <span id="youAre"></span></p>
+    <p>Other player: <span id="otherPlayer">waiting...</span></p>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyTz4mSZ3Cz7NPQi74lKildQWSqm5zgVo",
+      authDomain: "defusalgame.firebaseapp.com",
+      projectId: "defusalgame",
+      storageBucket: "defusalgame.firebasestorage.app",
+      messagingSenderId: "817365072928",
+      appId: "1:817365072928:web:86b7975cc1dd25fe3d9045",
+      databaseURL: "https://defusalgame.firebaseio.com"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let uid = null;
+
+    firebase.auth().signInAnonymously().then(user => {
+      uid = user.user.uid;
+    });
+
+    function createRoom() {
+      const code = document.getElementById('roomCode').value.toUpperCase();
+      db.ref("rooms/" + code).set({
+        players: {
+          host: { uid: uid }
+        }
+      });
+      showLobby("host", code);
+    }
+
+    function joinRoom() {
+      const code = document.getElementById('roomCode').value.toUpperCase();
+      db.ref("rooms/" + code + "/players/guest").set({ uid: uid });
+      showLobby("guest", code);
+    }
+
+    function showLobby(role, code) {
+      document.getElementById("setup").style.display = "none";
+      document.getElementById("lobby").style.display = "block";
+      document.getElementById("youAre").textContent = role;
+      document.getElementById("codeDisplay").textContent = code;
+
+      const other = role === "host" ? "guest" : "host";
+      db.ref("rooms/" + code + "/players/" + other).on("value", snapshot => {
+        const data = snapshot.val();
+        document.getElementById("otherPlayer").textContent = data ? "connected" : "waiting...";
+      });
+    }
+  </script>
+</body>
+</html>
