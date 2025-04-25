@@ -1,25 +1,39 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bomb Defusal Games</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Game Hub</title>
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    input, button {
+      margin: 10px;
+      padding: 10px;
+      font-size: 1em;
+    }
+  </style>
 </head>
-  <!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
-<script src="main.js"></script>
 <body>
-  <div class="menu">
-    <h1>Game Hub</h1>
-    <input id="codeInput" type="text" placeholder="Enter game code..." />
-    <button onclick="enterGame()">Enter</button>
-    <p id="error" class="hidden">Invalid code.</p>
+  <h1>Welcome to Game Hub</h1>
+  <input id="gameInput" placeholder="Type game name (e.g. defusal)" />
+  <div id="joinCreate">
+    <input id="roomInput" placeholder="Enter Room Code (leave blank to create one)" />
+    <button onclick="handlePlay()">Play</button>
+    <p id="error" style="color:red; display:none;">Invalid game or room code.</p>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
