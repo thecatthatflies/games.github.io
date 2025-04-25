@@ -9,27 +9,43 @@ const firebaseConfig = {
   databaseURL: "https://defusalgame.firebaseio.com"
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-
-// Sign in anonymously
-firebase.auth().signInAnonymously()
-  .then(() => {
-    console.log("Signed in anonymously");
-  })
-  .catch((error) => {
-    console.error("Firebase auth error:", error);
-  });
-
+firebase.auth().signInAnonymously();
 const db = firebase.database();
 
-// Only keep one enterGame() function!
-function enterGame() {
-  const code = document.getElementById('codeInput').value.toLowerCase();
-  const allowedGames = ['defusal', 'maze', 'password'];
-  if (allowedGames.includes(code)) {
-    window.location.href = code + ".html?code=" + code;
+function generateRoomCode() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let code = '';
+  for (let i = 0; i < 4; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
+
+function handlePlay() {
+  const game = document.getElementById('gameInput').value.toLowerCase();
+  const roomCodeInput = document.getElementById('roomInput').value.toUpperCase();
+  const allowedGames = ['defusal']; // expand later
+
+  if (!allowedGames.includes(game)) {
+    document.getElementById('error').style.display = 'block';
+    return;
+  }
+
+  if (roomCodeInput) {
+    // join existing room
+    db.ref("rooms/" + roomCodeInput).get().then((snapshot) => {
+      if (snapshot.exists()) {
+        window.location.href = `${game}.html?code=${roomCodeInput}`;
+      } else {
+        document.getElementById('error').style.display = 'block';
+      }
+    });
   } else {
-    document.getElementById('error').classList.remove('hidden');
+    // create new room
+    let newCode = generateRoomCode();
+    db.ref("rooms/" + newCode).set({ createdAt: Date.now() }).then(() => {
+      window.location.href = `${game}.html?code=${newCode}`;
+    });
   }
 }
