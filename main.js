@@ -6,7 +6,7 @@ const firebaseConfig = {
   storageBucket: "defusalgame.firebasestorage.app",
   messagingSenderId: "817365072928",
   appId: "1:817365072928:web:86b7975cc1dd25fe3d9045",
-  databaseURL: "https://defusalgame.firebaseio.com"
+  databaseURL: "https://defusalgame-default-rtdb.firebaseio.com"
 };
 
 firebase.initializeApp(firebaseConfig);
