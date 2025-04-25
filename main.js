@@ -26,6 +26,7 @@ function handlePlay() {
   const game = document.getElementById('gameInput').value.toLowerCase();
   const roomCodeInput = document.getElementById('roomInput').value.toUpperCase();
   const allowedGames = ['defusal']; // expand later
+  console.log("Play clicked!");
 
   if (!allowedGames.includes(game)) {
     document.getElementById('error').style.display = 'block';
