@@ -67,11 +67,7 @@
     });
 
     function createRoom() {
-      db.ref("rooms/" + roomCode).set({
-        players: {
-          host: { uid: uid }
-        }
-      });
+      db.ref("rooms/" + roomCode + "/players/host").set({ uid: uid });
       showLobby("host", roomCode);
     }
 
