@@ -47,7 +47,7 @@ function handlePlay() {
   }
 
   if (roomCodeInput) {
-    db.ref("rooms/" + roomCodeInput).get().then((snapshot) => {
+    db.ref("rooms/" + roomCodeInput).once("value").then((snapshot) => {
       if (snapshot.exists()) {
         window.location.href = `${game}.html?code=${roomCodeInput}`;
       } else {
