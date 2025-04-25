@@ -10,8 +10,16 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-firebase.auth().signInAnonymously();
-const db = firebase.database();
+
+let db;
+firebase.auth().signInAnonymously()
+  .then((user) => {
+    db = firebase.database();
+    console.log("Signed in anonymously");
+  })
+  .catch((error) => {
+    console.error("Firebase auth error:", error);
+  });
 
 function generateRoomCode() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -23,18 +31,22 @@ function generateRoomCode() {
 }
 
 function handlePlay() {
+  console.log("Play clicked!");
   const game = document.getElementById('gameInput').value.toLowerCase();
   const roomCodeInput = document.getElementById('roomInput').value.toUpperCase();
-  const allowedGames = ['defusal']; // expand later
-  console.log("Play clicked!");
+  const allowedGames = ['defusal'];
 
   if (!allowedGames.includes(game)) {
     document.getElementById('error').style.display = 'block';
     return;
   }
 
+  if (!db) {
+    console.error("Firebase database not ready yet.");
+    return;
+  }
+
   if (roomCodeInput) {
-    // join existing room
     db.ref("rooms/" + roomCodeInput).get().then((snapshot) => {
       if (snapshot.exists()) {
         window.location.href = `${game}.html?code=${roomCodeInput}`;
@@ -43,8 +55,7 @@ function handlePlay() {
       }
     });
   } else {
-    // create new room
-    let newCode = generateRoomCode();
+    const newCode = generateRoomCode();
     db.ref("rooms/" + newCode).set({ createdAt: Date.now() }).then(() => {
       window.location.href = `${game}.html?code=${newCode}`;
     });
