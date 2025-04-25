@@ -42,6 +42,11 @@ function handlePlay() {
   }
 
   if (!db) {
+    alert("Firebase is not ready yet. Wait a second and try again.");
+    return;
+  }
+
+  if (!db) {
     console.error("Firebase database not ready yet.");
     return;
   }
