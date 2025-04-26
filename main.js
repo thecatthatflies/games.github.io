@@ -17,12 +17,11 @@ const db = firebase.database();
 function goToGame() {
   const game = document.getElementById("gameInput").value.toLowerCase();
   if (game === "defusal") {
-    window.location.href = "defusal-lobby.html";
+    window.location.href = "defusal-lobby.html?code=null";
   } else {
     alert("Game not found.");
   }
 }
-
 // --- defusal-lobby.html
 if (window.location.pathname.includes("defusal-lobby.html")) {
   const username = localStorage.getItem("username");
