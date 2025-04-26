@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Defusal Pre-Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Defusal Pre-Game Menu</h1>
+
+  <div id="menuSection">
+    <p>Role: <span id="roleDisplay">Loading...</span></p>
+    <p>Difficulty: 
+      <select id="difficultySelect">
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </select>
+    </p>
+    <button onclick="switchRoles()">Switch Roles</button>
+    <button onclick="startGame()">Start Game</button>
+    <button onclick="abortGame()">Abort Game</button>
+  </div>
+
+  <div id="gameSection" style="display:none;">
+    <h2>Game Started!</h2>
+    <p>Modules and timer coming soon...</p>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
