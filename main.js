@@ -13,7 +13,6 @@ firebase.initializeApp(firebaseConfig);
 firebase.auth().signInAnonymously();
 const db = firebase.database();
 
-
 // === INDEX PAGE ===
 function goToGame() {
   const game = document.getElementById("gameInput").value.toLowerCase();
@@ -24,25 +23,13 @@ function goToGame() {
   }
 }
 
-
 // === DEFUSAL LOBBY ===
-if (window.location.pathname.includes("defusal-lobby.html")) {
-  const urlParams = new URLSearchParams(window.location.search);
-  const roomCode = urlParams.get("code")?.toUpperCase();
+function setupLobby() {
   const username = localStorage.getItem("username");
-  const lastRoom = localStorage.getItem("lastRoom");
-
-  // Show login if username not found
   if (!username) {
     document.getElementById("loginSection").style.display = "block";
   } else {
     document.getElementById("lobbySection").style.display = "block";
-  }
-
-  // Only save if it's a real room
-  if (roomCode && roomCode !== "NULL" && lastRoom !== roomCode && username) {
-    localStorage.setItem("lastRoom", roomCode);
-    db.ref("users/" + username).update({ lastRoom: roomCode });
   }
 }
 
@@ -85,12 +72,10 @@ function createRoom() {
   const code = generateRoomCode();
   alert("Your room code is: " + code);
 
-  // Save room in storage and Firebase
   const username = localStorage.getItem("username");
   localStorage.setItem("lastRoom", code);
   db.ref("users/" + username).update({ lastRoom: code });
 
-  // Go to game with room code
   window.location.href = "defusal-game.html?code=" + code;
 }
 
